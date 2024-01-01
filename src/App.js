@@ -12,7 +12,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 // import InfoIcon from "@mui/icons-material/Info";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
-import UpdateIcon from "@mui/icons-material/Update";
+import PlaceIcon from '@mui/icons-material/Place';
 // import Thing from "./Thing.js";
 // import Person from "./Person";
 import Moment from "./Moment";
@@ -162,14 +162,20 @@ function App() {
                                 >
                                     {waktu.format("dddd, DD MMMM YYYY")}
                                 </Typography>
-                                {isTimeRunning && (
-                                    <Typography
-                                        component="div"
-                                        sx={{ flexGrow: 1 }}
-                                    >
-                                        {waktu.format("HH:mm:ss")}
-                                    </Typography>
-                                )}
+
+                                <Typography
+                                    component="div"
+                                    sx={{ flexGrow: 1 }}
+                                >
+                                    {waktu.format("HH:mm:ss")}
+                                </Typography>
+                                <Typography
+                                    component="div"
+                                    sx={{ flexGrow: 1 }}
+                                    fontSize="small"
+                                >
+                                    <PlaceIcon fontSize="small"/> Kota Bekasi
+                                </Typography>
                             </Stack>
 
                             <IconButton
@@ -189,7 +195,7 @@ function App() {
                     <Stack
                         // spacing={{ xs: 1, sm: 1 }}
                         padding={1}
-                        paddingTop={9}
+                        paddingTop={11}
                         useFlexGap
                         flexWrap="wrap"
                     >
