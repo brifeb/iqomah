@@ -23,12 +23,14 @@ export default function Moment({
     isTimeRunning,
     isShowDetail,
 }) {
-    const waktuSholat = dayjs(data.when); 
-    const waktuNextSholat = dayjs(data.next); 
+    const waktuSholat = dayjs(data.when);
+    const waktuNextSholat = dayjs(data.next);
     let currentDate = waktu;
-    // currentDate = dayjs("2024-01-01 11:55:00");
+    // currentDate = dayjs("2024-01-01 11:55:00");  // to debug
     let gapNowToSholat = dayjs.duration(currentDate.diff(waktuSholat));
-    let gapSholatToNextSholat = dayjs.duration(waktuNextSholat.diff(waktuSholat));
+    let gapSholatToNextSholat = dayjs.duration(
+        waktuNextSholat.diff(waktuSholat)
+    );
 
     const [seconds, setSeconds] = useState(gapNowToSholat.seconds());
 
@@ -50,7 +52,9 @@ export default function Moment({
             const minutesS = minutes !== 0 ? toplus(minutes) + "m " : "";
             const secondsS = seconds !== 0 ? toplus(seconds) + "s" : "";
 
-            return "- " + hourS + minutesS + secondsS;
+            if (data.currentSholat + 1 == data.id) {
+                return "- " + hourS + minutesS + secondsS;
+            }
         }
     };
 
@@ -68,7 +72,9 @@ export default function Moment({
             const minutesS = minutes !== 0 ? minutes + "m " : "";
             const secondsS = seconds !== 0 ? seconds + "s" : "";
 
-            return "+ " + hourS + minutesS + secondsS;
+            if (data.currentSholat == data.id) {
+                return "+ " + hourS + minutesS + secondsS;
+            }
         }
     };
 
@@ -78,16 +84,16 @@ export default function Moment({
         //     gapSholatToNextSholat.minutes() > 0 ||
         //     gapSholatToNextSholat.seconds() > 0
         // ) {
-            const hour = gapSholatToNextSholat.hours();
-            const minutes = gapSholatToNextSholat.minutes();
-            const seconds = gapSholatToNextSholat.seconds();
+        const hour = gapSholatToNextSholat.hours();
+        const minutes = gapSholatToNextSholat.minutes();
+        const seconds = gapSholatToNextSholat.seconds();
 
-            const hourS = hour !== 0 ? hour + "h " : "";
-            const minutesS = minutes !== 0 ? minutes + "m " : "";
-            const secondsS = seconds !== 0 ? seconds + "s" : "";
+        const hourS = hour !== 0 ? hour + "h " : "";
+        const minutesS = minutes !== 0 ? minutes + "m " : "";
+        const secondsS = seconds !== 0 ? seconds + "s" : "";
 
-            // return "+ " + hourS + minutesS + secondsS;
-            return gapSholatToNextSholat.asSeconds();
+        // return "+ " + hourS + minutesS + secondsS;
+        return gapSholatToNextSholat.asSeconds();
         // }
     };
 
@@ -101,9 +107,9 @@ export default function Moment({
         );
     };
 
-    let progress = parseInt(gapNowToSholat/gapSholatToNextSholat * 100);
-    progress = progress > 100? 100: progress;
-    progress = progress < 0? 0: progress;
+    let progress = parseInt((gapNowToSholat / gapSholatToNextSholat) * 100);
+    progress = progress > 100 ? 100 : progress;
+    progress = progress < 0 ? 0 : progress;
 
     useEffect(() => {
         // Update the seconds value every second
@@ -120,28 +126,29 @@ export default function Moment({
     }, [isTimeRunning]); //
 
     function toTitleCase(str) {
-        return str.replace(
-          /\w\S*/g,
-          function(txt) {
+        return str.replace(/\w\S*/g, function (txt) {
             return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
-          }
-        );
-      }
+        });
+    }
+
 
     return (
         <Box
             sx={{
                 minWidth: 275,
-                background: '#333',
-                backgroundSize: "100%",
+                // background: "#333",
+                // backgroundSize: "100%",
+                background: "rgb(2,0,36)",
+                background:
+                    "linear-gradient(90deg, rgba(0,0,0,1) 0%, rgba(3,27,2,1) "+(progress)+"%, rgba(7,74,2,1) "+progress+"%)",
                 padding: 0,
-                margin: '3px',
-                borderRadius: '3px'
+                margin: "3px",
+                borderRadius: "3px",
             }}
         >
             <Box
                 sx={{
-                    backgroundColor: "rgba(0,0,0,0.5)",
+                    backgroundColor: (data.currentSholat == data.id) ? "rgba(0,0,0,0.1)" : "rgba(0,0,0,0.5)",
                     // backgroundColor: "red",
                     color: "#ccc",
                     // borderRadius: "5px",
@@ -158,9 +165,13 @@ export default function Moment({
                         <Typography>{toTitleCase(data.name)}</Typography>
                         <Typography variant="h6">
                             {waktuSholat.format("hh:mm")}
-                            {/* <br/>{data.when}
-                            <br/>{data.next}
-                            <br/>{cetakNext()} */}
+                            {/* <br />
+                            {data.when}
+                            <br />
+                            {data.next}
+                            <br />
+                            {hayo()} */}
+                            {/* <br/>{cetakNext()} */}
                         </Typography>
                         {/* <Typography fontSize="small">
                             {currentDate.format("dddd, DD MMMM YYYY hh:mm:ss")}
@@ -171,7 +182,7 @@ export default function Moment({
                         <Typography>{cetakAfter()}</Typography>
                     </Grid>
                 </Grid>
-                {/* 
+{/* 
                 <Box sx={{ display: "flex", alignItems: "center" }}>
                     <Box sx={{ minWidth: 20 }}></Box>
                     <Box sx={{ width: "100%", mr: 1 }}>
@@ -185,7 +196,6 @@ export default function Moment({
                     <Box
                         sx={{ minWidth: 20, textAlign: "left", marginRight: 1 }}
                     >
-
                         <Typography fontSize="small">{progress}%</Typography>
                     </Box>
                 </Box>

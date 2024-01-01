@@ -41,7 +41,9 @@ const darkTheme = createTheme({
 });
 
 function App() {
+    // const debugTime = "2024-01-01 11:50:00"
     const [waktu, setWaktu] = useState(dayjs());
+    // const [waktu, setWaktu] = useState(dayjs(debugTime));
     const [isTimeRunning, setIsTimeRunning] = useState(true);
     const [isShowDetail, setIsShowDetail] = useState(false);
 
@@ -53,6 +55,7 @@ function App() {
         const intervalId = setInterval(() => {
             if (isTimeRunning) {
                 setWaktu(dayjs());
+                // setWaktu(dayjs(debugTime));
             }
         }, 1000);
 
@@ -99,6 +102,7 @@ function App() {
     // Filter and format the data
     const filteredPrayerTimes = {};
     let urutan = 1;
+    let currentSholat = 0;
     selectedPrayers.forEach((prayer) => {
         filteredPrayerTimes[prayer] = formatted[prayer];
 
@@ -113,17 +117,43 @@ function App() {
 
         const nextPrayer = selectedPrayers[nextIndex];
 
+        const when = waktu.format("YYYY-MM-DD ") + formatted[prayer];
+        const next =
+            tanggalSholat.format("YYYY-MM-DD ") + formatted[nextPrayer];
+
+        const waktuSholat = dayjs(when);
+        const waktuNextSholat = dayjs(next);
+        let currentDate = waktu;
+
+        let gapNowToSholat = dayjs.duration(currentDate.diff(waktuSholat));
+        let gapNowToNextSholat = dayjs.duration(
+            currentDate.diff(waktuNextSholat)
+        );
+
+        if (
+            gapNowToSholat.asSeconds() >= 0 &&
+            gapNowToNextSholat.asSeconds() < 0
+        ) {
+            currentSholat = urutan;
+        }
+
         const waktuSholatBaru = {
             id: urutan,
             name: prayer,
             type: "Moment",
             // when: "2023-09-28 07:24",
-            when: waktu.format("YYYY-MM-DD ") + formatted[prayer],
-            next: tanggalSholat.format("YYYY-MM-DD ") + formatted[nextPrayer],
+            when: when,
+            next: next,
+            // when: gapNowToSholat.asSeconds(),
+            // next: gapNowToNextSholat.asSeconds(),
         };
         data.push(waktuSholatBaru);
 
         urutan++;
+    });
+
+    data.forEach((element) => {
+        element.currentSholat = currentSholat;
     });
 
     const listWaktuSholat = Object.entries(filteredPrayerTimes).map(
