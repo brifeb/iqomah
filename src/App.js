@@ -41,9 +41,9 @@ const darkTheme = createTheme({
 });
 
 function App() {
-    // const debugTime = "2024-01-01 11:50:00"
-    const [waktu, setWaktu] = useState(dayjs());
+    // const debugTime = "2024-01-02 0:24:50"
     // const [waktu, setWaktu] = useState(dayjs(debugTime));
+    const [waktu, setWaktu] = useState(dayjs());
     const [isTimeRunning, setIsTimeRunning] = useState(true);
     const [isShowDetail, setIsShowDetail] = useState(false);
 
@@ -54,8 +54,8 @@ function App() {
         // Update the seconds value every second
         const intervalId = setInterval(() => {
             if (isTimeRunning) {
-                setWaktu(dayjs());
                 // setWaktu(dayjs(debugTime));
+                setWaktu(dayjs());
             }
         }, 1000);
 
@@ -76,7 +76,7 @@ function App() {
 
     // WaKTU SHOLAT
 
-    const calculator = getPrayerCalculator(methods.MWL);
+    const calculator = getPrayerCalculator(methods.Karachi);
 
     const times = calculator(
         {

@@ -78,6 +78,23 @@ export default function Moment({
         }
     };
 
+    const cetakIqomah = () => {
+        if (data.currentSholat == data.id) {
+            const lamaIqomah = 20;
+            const waktuIqomah = waktuSholat.add(lamaIqomah, "minute");
+            let gapNowToIqomah = dayjs.duration(waktuIqomah.diff(currentDate));
+
+            if (gapNowToIqomah.minutes() >= 0 && gapNowToIqomah.seconds() >= 0) {
+                let min = gapNowToIqomah.minutes();
+                min = min <= 9 ? "0" + min : min;
+                let sec = gapNowToIqomah.seconds();
+                sec = sec <= 9 ? "0" + sec : sec;
+
+                return "Iqomah - " + min + ":" + sec;
+            }
+        }
+    };
+
     const cetakNext = () => {
         // if (
         //     gapSholatToNextSholat.hours() > 0 ||
@@ -131,7 +148,6 @@ export default function Moment({
         });
     }
 
-
     return (
         <Box
             sx={{
@@ -140,7 +156,11 @@ export default function Moment({
                 // backgroundSize: "100%",
                 background: "rgb(2,0,36)",
                 background:
-                    "linear-gradient(90deg, rgba(0,0,0,1) 0%, rgba(3,27,2,1) "+(progress)+"%, rgba(7,74,2,1) "+progress+"%)",
+                    "linear-gradient(90deg, rgba(0,0,0,1) 0%, rgba(3,27,2,1) " +
+                    progress +
+                    "%, rgba(7,74,2,1) " +
+                    progress +
+                    "%)",
                 padding: 0,
                 margin: "3px",
                 borderRadius: "3px",
@@ -148,7 +168,10 @@ export default function Moment({
         >
             <Box
                 sx={{
-                    backgroundColor: (data.currentSholat == data.id) ? "rgba(0,0,0,0.1)" : "rgba(0,0,0,0.5)",
+                    backgroundColor:
+                        data.currentSholat == data.id
+                            ? "rgba(0,0,0,0.1)"
+                            : "rgba(0,0,0,0.5)",
                     // backgroundColor: "red",
                     color: "#ccc",
                     // borderRadius: "5px",
@@ -159,12 +182,15 @@ export default function Moment({
             >
                 <Grid container zeroMinWidth="true">
                     <Grid item xs={4}>
-                        <Typography>{cetakBefore()}</Typography>
+                        <Typography>
+                            {cetakBefore()}
+                            {cetakIqomah()}
+                        </Typography>
                     </Grid>
                     <Grid item xs={4}>
                         <Typography>{toTitleCase(data.name)}</Typography>
                         <Typography variant="h6">
-                            {waktuSholat.format("hh:mm")}
+                            {waktuSholat.format("HH:mm")}
                             {/* <br />
                             {data.when}
                             <br />
@@ -182,7 +208,7 @@ export default function Moment({
                         <Typography>{cetakAfter()}</Typography>
                     </Grid>
                 </Grid>
-{/* 
+                {/* 
                 <Box sx={{ display: "flex", alignItems: "center" }}>
                     <Box sx={{ minWidth: 20 }}></Box>
                     <Box sx={{ width: "100%", mr: 1 }}>
