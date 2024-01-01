@@ -69,7 +69,7 @@ export default function Moment({
     };
 
     const cetakIqomah = () => {
-        if (data.currentSholat === data.id) {
+        if (data.currentSholat === data.id && data.name != 'sunrise') {
             const lamaIqomah = 20;
             const waktuIqomah = waktuSholat.add(lamaIqomah, "minute");
             let gapNowToIqomah = dayjs.duration(waktuIqomah.diff(currentDate));
