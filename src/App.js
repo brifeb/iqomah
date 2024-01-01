@@ -1,20 +1,11 @@
-// import logo from "./logo.svg";
 import "./App.css";
-// import Box from "@mui/material/Box";
 import AppBar from "@mui/material/AppBar";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import Stack from "@mui/material/Stack";
-// import Button from "@mui/material/Button";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
-import MenuIcon from "@mui/icons-material/Menu";
-// import InfoIcon from "@mui/icons-material/Info";
-import VisibilityIcon from "@mui/icons-material/Visibility";
-import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import PlaceIcon from "@mui/icons-material/Place";
-// import Thing from "./Thing.js";
-// import Person from "./Person";
 import Moment from "./Moment";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
@@ -23,7 +14,6 @@ import isSameOrBefore from "dayjs/plugin/isSameOrBefore";
 import CssBaseline from "@mui/material/CssBaseline";
 import { useState, useEffect } from "react";
 import "dayjs/locale/id"; // Impor plugin lokal bahasa Indonesia
-// import data from "./data.json";
 import { getPrayerCalculator, methods, format } from "time-pray";
 import { today } from "./Dates.ts";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
@@ -45,11 +35,7 @@ function App() {
     // const [waktu, setWaktu] = useState(dayjs(debugTime));
     const [waktu, setWaktu] = useState(dayjs());
     const [isTimeRunning, setIsTimeRunning] = useState(true);
-    const [isShowDetail, setIsShowDetail] = useState(false);
 
-    const toggleShowDetail = () => {
-        setIsShowDetail((last) => !last);
-    };
     useEffect(() => {
         // Update the seconds value every second
         const intervalId = setInterval(() => {
@@ -156,14 +142,6 @@ function App() {
         element.currentSholat = currentSholat;
     });
 
-    const listWaktuSholat = Object.entries(filteredPrayerTimes).map(
-        ([prayer, time]) => (
-            <li>
-                {prayer} {time} {waktu.format("HH:mm")}
-            </li>
-        )
-    );
-
     let filteredData = data;
 
     let theThings = filteredData.map((thing) => {
@@ -174,7 +152,6 @@ function App() {
                 handleClickWaktu={handleClickWaktu}
                 waktu={waktu}
                 isTimeRunning={isTimeRunning}
-                isShowDetail={isShowDetail}
             />
         );
     });
@@ -182,7 +159,6 @@ function App() {
     return (
         <ThemeProvider theme={darkTheme}>
             <CssBaseline />
-
             <div className="App">
                 <Container maxWidth="sm" disableGutters={true}>
                     <CssBaseline />
