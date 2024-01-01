@@ -12,7 +12,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 // import InfoIcon from "@mui/icons-material/Info";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
-import PlaceIcon from '@mui/icons-material/Place';
+import PlaceIcon from "@mui/icons-material/Place";
 // import Thing from "./Thing.js";
 // import Person from "./Person";
 import Moment from "./Moment";
@@ -80,7 +80,7 @@ function App() {
             longitude: 107.017,
             latitude: -6.317,
         },
-        today() // or getDatePartsUTC(new Date("2022-11-12")) or [2022,11,12]
+        today()
     );
 
     for (const time of Object.keys(times)) {
@@ -101,12 +101,25 @@ function App() {
     let urutan = 1;
     selectedPrayers.forEach((prayer) => {
         filteredPrayerTimes[prayer] = formatted[prayer];
+
+        let tanggalSholat = waktu;
+        let nextIndex = urutan;
+
+        // jika isya', maka next subuh besoknya
+        if (urutan >= selectedPrayers.length) {
+            tanggalSholat = waktu.add(1, "day");
+            nextIndex = 0;
+        }
+
+        const nextPrayer = selectedPrayers[nextIndex];
+
         const waktuSholatBaru = {
             id: urutan,
             name: prayer,
             type: "Moment",
             // when: "2023-09-28 07:24",
             when: waktu.format("YYYY-MM-DD ") + formatted[prayer],
+            next: tanggalSholat.format("YYYY-MM-DD ") + formatted[nextPrayer],
         };
         data.push(waktuSholatBaru);
 
@@ -142,7 +155,7 @@ function App() {
 
             <div className="App">
                 <Container maxWidth="sm" disableGutters={true}>
-                    {/* <CssBaseline /> */}
+                    <CssBaseline />
                     <AppBar sx={{ backgroundColor: "rgba(0,0,0,0.75)" }}>
                         <Toolbar>
                             <IconButton
@@ -174,7 +187,7 @@ function App() {
                                     sx={{ flexGrow: 1 }}
                                     fontSize="small"
                                 >
-                                    <PlaceIcon fontSize="small"/> Kota Bekasi
+                                    <PlaceIcon fontSize="small" /> Kota Bekasi
                                 </Typography>
                             </Stack>
 

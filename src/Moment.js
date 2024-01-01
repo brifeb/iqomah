@@ -23,22 +23,24 @@ export default function Moment({
     isTimeRunning,
     isShowDetail,
 }) {
-    const waktuSholat = dayjs(data.when); // Replace '1984-06-15' with your actual birthdate in YYYY-MM-DD format
+    const waktuSholat = dayjs(data.when); 
+    const waktuNextSholat = dayjs(data.next); 
     let currentDate = waktu;
     // currentDate = dayjs("2024-01-01 11:55:00");
-    let gapSholat = dayjs.duration(currentDate.diff(waktuSholat));
+    let gapNowToSholat = dayjs.duration(currentDate.diff(waktuSholat));
+    let gapSholatToNextSholat = dayjs.duration(waktuNextSholat.diff(waktuSholat));
 
-    const [seconds, setSeconds] = useState(gapSholat.seconds());
+    const [seconds, setSeconds] = useState(gapNowToSholat.seconds());
 
     const cetakBefore = () => {
         if (
-            gapSholat.hours() < 0 ||
-            gapSholat.minutes() < 0 ||
-            gapSholat.seconds() < 0
+            gapNowToSholat.hours() < 0 ||
+            gapNowToSholat.minutes() < 0 ||
+            gapNowToSholat.seconds() < 0
         ) {
-            const hour = gapSholat.hours();
-            const minutes = gapSholat.minutes();
-            const seconds = gapSholat.seconds();
+            const hour = gapNowToSholat.hours();
+            const minutes = gapNowToSholat.minutes();
+            const seconds = gapNowToSholat.seconds();
 
             const toplus = (angka) => {
                 return angka * -1;
@@ -54,13 +56,13 @@ export default function Moment({
 
     const cetakAfter = () => {
         if (
-            gapSholat.hours() > 0 ||
-            gapSholat.minutes() > 0 ||
-            gapSholat.seconds() > 0
+            gapNowToSholat.hours() > 0 ||
+            gapNowToSholat.minutes() > 0 ||
+            gapNowToSholat.seconds() > 0
         ) {
-            const hour = gapSholat.hours();
-            const minutes = gapSholat.minutes();
-            const seconds = gapSholat.seconds();
+            const hour = gapNowToSholat.hours();
+            const minutes = gapNowToSholat.minutes();
+            const seconds = gapNowToSholat.seconds();
 
             const hourS = hour !== 0 ? hour + "h " : "";
             const minutesS = minutes !== 0 ? minutes + "m " : "";
@@ -70,25 +72,46 @@ export default function Moment({
         }
     };
 
+    const cetakNext = () => {
+        // if (
+        //     gapSholatToNextSholat.hours() > 0 ||
+        //     gapSholatToNextSholat.minutes() > 0 ||
+        //     gapSholatToNextSholat.seconds() > 0
+        // ) {
+            const hour = gapSholatToNextSholat.hours();
+            const minutes = gapSholatToNextSholat.minutes();
+            const seconds = gapSholatToNextSholat.seconds();
+
+            const hourS = hour !== 0 ? hour + "h " : "";
+            const minutesS = minutes !== 0 ? minutes + "m " : "";
+            const secondsS = seconds !== 0 ? seconds + "s" : "";
+
+            // return "+ " + hourS + minutesS + secondsS;
+            return gapSholatToNextSholat.asSeconds();
+        // }
+    };
+
     const cetakDurasi = () => {
         return (
-            gapSholat.hours() +
+            gapNowToSholat.hours() +
             ":" +
-            gapSholat.minutes() +
+            gapNowToSholat.minutes() +
             ":" +
-            gapSholat.seconds()
+            gapNowToSholat.seconds()
         );
     };
 
-    const progress = 50;
+    let progress = parseInt(gapNowToSholat/gapSholatToNextSholat * 100);
+    progress = progress > 100? 100: progress;
+    progress = progress < 0? 0: progress;
 
     useEffect(() => {
         // Update the seconds value every second
         const intervalId = setInterval(() => {
             if (isTimeRunning) {
                 currentDate = dayjs();
-                gapSholat = dayjs.duration(currentDate.diff(waktuSholat));
-                setSeconds(gapSholat.seconds());
+                gapNowToSholat = dayjs.duration(currentDate.diff(waktuSholat));
+                setSeconds(gapNowToSholat.seconds());
             }
         }, 1000);
 
@@ -109,11 +132,11 @@ export default function Moment({
         <Box
             sx={{
                 minWidth: 275,
-                background: data.img
-                    ? `url("/img/${data.img}")`
-                    : "linear-gradient(to bottom, #331100 , #006600)",
+                background: '#333',
                 backgroundSize: "100%",
                 padding: 0,
+                margin: '3px',
+                borderRadius: '3px'
             }}
         >
             <Box
@@ -135,6 +158,9 @@ export default function Moment({
                         <Typography>{toTitleCase(data.name)}</Typography>
                         <Typography variant="h6">
                             {waktuSholat.format("hh:mm")}
+                            {/* <br/>{data.when}
+                            <br/>{data.next}
+                            <br/>{cetakNext()} */}
                         </Typography>
                         {/* <Typography fontSize="small">
                             {currentDate.format("dddd, DD MMMM YYYY hh:mm:ss")}
