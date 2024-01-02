@@ -49,7 +49,17 @@ function App() {
 
     // WaKTU SHOLAT
 
-    const calculator = getPrayerCalculator(methods.Karachi);
+    const params = {
+        imsak: { minutes: 10 },
+        fajr: { degree: 19 },
+        dhuhr: { minutes: 3 },
+        asr: { factor: 1 },
+        maghrib: { minutes: 3 },
+        isha: { degree: 18 },
+        midnight: "Standard",
+        highLats: "NightMiddle",
+    };
+    const calculator = getPrayerCalculator(params);
 
     const times = calculator(
         {
@@ -60,11 +70,11 @@ function App() {
     );
 
     const tunedTimes = tune({ 
-        fajr: -5,
+        fajr: 0,
         sunrise: 1,
-        dhuhr: 3,
+        dhuhr: 0,
         asr: 3,
-        maghrib: 3,
+        maghrib: 0,
         isha: 2
      }, times);
 
