@@ -13,7 +13,7 @@ import isSameOrBefore from "dayjs/plugin/isSameOrBefore";
 import CssBaseline from "@mui/material/CssBaseline";
 import { useState, useEffect } from "react";
 import "dayjs/locale/id"; // Impor plugin lokal bahasa Indonesia
-import { getPrayerCalculator, methods, format } from "time-pray";
+import { getPrayerCalculator, methods, format, tune } from "time-pray";
 import { today } from "./Dates.ts";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 
@@ -53,16 +53,23 @@ function App() {
 
     const times = calculator(
         {
-            longitude: 107.017,
-            latitude: -6.317,
+            longitude: 107.017006,
+            latitude: -6.3175761,
         },
         today()
     );
 
-    for (const time of Object.keys(times)) {
-        console.log(times[time].toISOString());
-    }
-    const formatted = format(times, "24h", +7);
+    const tunedTimes = tune({ 
+        fajr: -5,
+        sunrise: 1,
+        dhuhr: 3,
+        asr: 3,
+        maghrib: 3,
+        isha: 2
+     }, times);
+
+
+    const formatted = format(tunedTimes, "24h", +7);
 
     const selectedPrayers = [
         "fajr",
