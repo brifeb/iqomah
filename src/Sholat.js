@@ -1,6 +1,5 @@
 import * as React from "react";
-import { useEffect } from "react";
-
+// import { useEffect } from "react";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
@@ -9,17 +8,10 @@ import duration from "dayjs/plugin/duration";
 
 dayjs.extend(duration);
 
-export default function Moment({
-    data,
-    handleClickWaktu,
-    waktu,
-    isTimeRunning,
-}) {
+export default function Sholat({ data, waktu }) {
     const waktuSholat = dayjs(data.when);
     const waktuNextSholat = dayjs(data.next);
-    let currentDate = waktu;
-    // currentDate = dayjs("2024-01-01 11:55:00");  // to debug
-    let gapNowToSholat = dayjs.duration(currentDate.diff(waktuSholat));
+    let gapNowToSholat = dayjs.duration(waktu.diff(waktuSholat));
     let gapSholatToNextSholat = dayjs.duration(
         waktuNextSholat.diff(waktuSholat)
     );
@@ -69,10 +61,10 @@ export default function Moment({
     };
 
     const cetakIqomah = () => {
-        if (data.currentSholat === data.id && data.name != 'sunrise') {
+        if (data.currentSholat === data.id && data.name !== "sunrise") {
             const lamaIqomah = 20;
             const waktuIqomah = waktuSholat.add(lamaIqomah, "minute");
-            let gapNowToIqomah = dayjs.duration(waktuIqomah.diff(currentDate));
+            let gapNowToIqomah = dayjs.duration(waktuIqomah.diff(waktu));
 
             if (
                 gapNowToIqomah.minutes() >= 0 &&
@@ -91,19 +83,6 @@ export default function Moment({
     let progress = parseInt((gapNowToSholat / gapSholatToNextSholat) * 100);
     progress = progress > 100 ? 100 : progress;
     progress = progress < 0 ? 0 : progress;
-
-    useEffect(() => {
-        // Update the seconds value every second
-        const intervalId = setInterval(() => {
-            if (isTimeRunning) {
-                currentDate = dayjs();
-                gapNowToSholat = dayjs.duration(currentDate.diff(waktuSholat));
-            }
-        }, 1000);
-
-        // Clean up the interval when the component unmounts
-        return () => clearInterval(intervalId);
-    }, [isTimeRunning]); //
 
     function toTitleCase(str) {
         return str.replace(/\w\S*/g, function (txt) {
@@ -132,9 +111,7 @@ export default function Moment({
                         data.currentSholat === data.id
                             ? "rgba(0,0,0,0.1)"
                             : "rgba(0,0,0,0.5)",
-                    // backgroundColor: "red",
                     color: "#ccc",
-                    // borderRadius: "5px",
                     display: "flow-root",
                 }}
                 paddingTop={1}
@@ -151,18 +128,7 @@ export default function Moment({
                         <Typography>{toTitleCase(data.name)}</Typography>
                         <Typography variant="h6">
                             {waktuSholat.format("HH:mm")}
-                            {/* <br />
-                            {data.when}
-                            <br />
-                            {data.next}
-                            <br />
-                            {hayo()} */}
-                            {/* <br/>{cetakNext()} */}
                         </Typography>
-                        {/* <Typography fontSize="small">
-                            {currentDate.format("dddd, DD MMMM YYYY hh:mm:ss")}
-                            <br />({cetakDurasi()})
-                        </Typography> */}
                     </Grid>
                     <Grid item xs={4}>
                         <Typography>{cetakAfter()}</Typography>

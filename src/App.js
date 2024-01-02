@@ -4,9 +4,8 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import Stack from "@mui/material/Stack";
 import Toolbar from "@mui/material/Toolbar";
-import IconButton from "@mui/material/IconButton";
 import PlaceIcon from "@mui/icons-material/Place";
-import Moment from "./Moment";
+import Sholat from "./Sholat.js";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import duration from "dayjs/plugin/duration";
@@ -34,29 +33,17 @@ function App() {
     // const debugTime = "2024-01-02 0:24:50"
     // const [waktu, setWaktu] = useState(dayjs(debugTime));
     const [waktu, setWaktu] = useState(dayjs());
-    const [isTimeRunning, setIsTimeRunning] = useState(true);
 
     useEffect(() => {
         // Update the seconds value every second
         const intervalId = setInterval(() => {
-            if (isTimeRunning) {
-                // setWaktu(dayjs(debugTime));
-                setWaktu(dayjs());
-            }
+            // setWaktu(dayjs(debugTime));
+            setWaktu(dayjs());
         }, 1000);
 
         // Clean up the interval when the component unmounts
         return () => clearInterval(intervalId);
-    }, [isTimeRunning]); //
-
-    const handleClickWaktu = (newWaktu) => {
-        setWaktu(newWaktu);
-        setIsTimeRunning(false);
-    };
-    const handleClickNow = () => {
-        setWaktu(dayjs());
-        setIsTimeRunning(true);
-    };
+    }, []); //
 
     let data = [];
 
@@ -89,6 +76,7 @@ function App() {
     const filteredPrayerTimes = {};
     let urutan = 1;
     let currentSholat = 0;
+
     selectedPrayers.forEach((prayer) => {
         filteredPrayerTimes[prayer] = formatted[prayer];
 
@@ -126,12 +114,8 @@ function App() {
         const waktuSholatBaru = {
             id: urutan,
             name: prayer,
-            type: "Moment",
-            // when: "2023-09-28 07:24",
             when: when,
             next: next,
-            // when: gapNowToSholat.asSeconds(),
-            // next: gapNowToNextSholat.asSeconds(),
         };
         data.push(waktuSholatBaru);
 
@@ -142,18 +126,8 @@ function App() {
         element.currentSholat = currentSholat;
     });
 
-    let filteredData = data;
-
-    let theThings = filteredData.map((thing) => {
-        return (
-            <Moment
-                id={thing.id}
-                data={thing}
-                handleClickWaktu={handleClickWaktu}
-                waktu={waktu}
-                isTimeRunning={isTimeRunning}
-            />
-        );
+    const theThings = data.map((thing) => {
+        return <Sholat id={thing.id} data={thing} waktu={waktu} />;
     });
 
     return (
@@ -164,15 +138,6 @@ function App() {
                     <CssBaseline />
                     <AppBar sx={{ backgroundColor: "rgba(0,0,0,0.75)" }}>
                         <Toolbar>
-                            <IconButton
-                                size="small"
-                                edge="start"
-                                color="inherit"
-                                aria-label="menu"
-                                sx={{ mr: 2 }}
-                            >
-                                {/* <MenuIcon /> */}
-                            </IconButton>
                             <Stack sx={{ flexGrow: 1 }}>
                                 <Typography
                                     variant="h6"
@@ -196,33 +161,19 @@ function App() {
                                     <PlaceIcon fontSize="small" /> Kota Bekasi
                                 </Typography>
                             </Stack>
-
-                            <IconButton
-                                size="small"
-                                edge="start"
-                                color="inherit"
-                                aria-label="menu"
-                                sx={{ mr: 0 }}
-                                onClick={handleClickNow}
-                            >
-                                {/* <UpdateIcon /> */}
-                            </IconButton>
                         </Toolbar>
                     </AppBar>
-                    {/* </Box> */}
+
 
                     <Stack
-                        // spacing={{ xs: 1, sm: 1 }}
                         padding={1}
                         paddingTop={11}
                         useFlexGap
                         flexWrap="wrap"
                     >
                         {theThings}
-                        {/* <ul>{listWaktuSholat}</ul> */}
                     </Stack>
                 </Container>
-                {/* </Box> */}
             </div>
         </ThemeProvider>
     );
