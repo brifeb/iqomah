@@ -69,15 +69,17 @@ function App() {
         today()
     );
 
-    const tunedTimes = tune({ 
-        fajr: 0,
-        sunrise: 1,
-        dhuhr: 0,
-        asr: 3,
-        maghrib: 0,
-        isha: 2
-     }, times);
-
+    const tunedTimes = tune(
+        {
+            fajr: 0,
+            sunrise: 1,
+            dhuhr: 0,
+            asr: 3,
+            maghrib: 0,
+            isha: 2,
+        },
+        times
+    );
 
     const formatted = format(tunedTimes, "24h", +7);
 
@@ -89,6 +91,9 @@ function App() {
         "maghrib",
         "isha",
     ];
+
+    const namaWaktu = ["subuh", "terbit", "dzuhur", "ashar", "maghrib", "isya"];
+
     // Filter and format the data
     const filteredPrayerTimes = {};
     let urutan = 1;
@@ -130,7 +135,7 @@ function App() {
 
         const waktuSholatBaru = {
             id: urutan,
-            name: prayer,
+            name: namaWaktu[urutan-1],
             when: when,
             next: next,
         };
@@ -144,7 +149,7 @@ function App() {
     });
 
     const theThings = data.map((thing) => {
-        return <Sholat id={thing.id} data={thing} waktu={waktu} />;
+        return <Sholat key={thing.id} id={thing.id} data={thing} waktu={waktu} />;
     });
 
     return (
@@ -180,7 +185,6 @@ function App() {
                             </Stack>
                         </Toolbar>
                     </AppBar>
-
 
                     <Stack
                         padding={1}

@@ -61,7 +61,7 @@ export default function Sholat({ data, waktu }) {
     };
 
     const cetakIqomah = () => {
-        if (data.currentSholat === data.id && data.name !== "sunrise") {
+        if (data.currentSholat === data.id && data.name !== "terbit") {
             const lamaIqomah = 20;
             const waktuIqomah = waktuSholat.add(lamaIqomah, "minute");
             let gapNowToIqomah = dayjs.duration(waktuIqomah.diff(waktu));
@@ -117,7 +117,7 @@ export default function Sholat({ data, waktu }) {
                 paddingTop={1}
                 paddingBottom={1}
             >
-                <Grid container zeroMinWidth="true">
+                <Grid container>
                     <Grid item xs={4}>
                         <Typography>
                             {cetakBefore()}
