@@ -180,7 +180,7 @@ function App() {
                                     sx={{ flexGrow: 1 }}
                                     fontSize="small"
                                 >
-                                    <PlaceIcon fontSize="small" /> Kota Bekasi
+                                    <PlaceIcon fontSize="small" /> Kota Bekasi, Jawa Barat
                                 </Typography>
                             </Stack>
                         </Toolbar>
