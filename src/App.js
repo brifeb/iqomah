@@ -61,10 +61,18 @@ function App() {
     };
     const calculator = getPrayerCalculator(params);
 
-    const times = calculator(
+    const timesBekasi = calculator(
         {
             longitude: 107.017006,
             latitude: -6.3175761,
+        },
+        today()
+    );
+
+    const timesMalang = calculator(
+        {
+            longitude: 112.6012397,
+            latitude: -7.932419,
         },
         today()
     );
@@ -78,7 +86,7 @@ function App() {
             maghrib: 0,
             isha: 2,
         },
-        times
+        timesMalang
     );
 
     const formatted = format(tunedTimes, "24h", +7);
@@ -180,7 +188,8 @@ function App() {
                                     sx={{ flexGrow: 1 }}
                                     fontSize="small"
                                 >
-                                    <PlaceIcon fontSize="small" /> Kota Bekasi, Jawa Barat
+                                    {/* <PlaceIcon fontSize="small" /> Kota Bekasi */}
+                                    <PlaceIcon fontSize="small" /> Kota Malang
                                 </Typography>
                             </Stack>
                         </Toolbar>
