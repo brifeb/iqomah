@@ -3,6 +3,7 @@ import AppBar from "@mui/material/AppBar";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import Stack from "@mui/material/Stack";
+import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import PlaceIcon from "@mui/icons-material/Place";
 import Sholat from "./Sholat.js";
@@ -61,18 +62,10 @@ function App() {
     };
     const calculator = getPrayerCalculator(params);
 
-    const timesBekasi = calculator(
+    const times = calculator(
         {
             longitude: 107.017006,
             latitude: -6.3175761,
-        },
-        today()
-    );
-
-    const timesMalang = calculator(
-        {
-            longitude: 112.6012397,
-            latitude: -7.932419,
         },
         today()
     );
@@ -86,10 +79,23 @@ function App() {
             maghrib: 0,
             isha: 2,
         },
-        timesMalang
+        times
     );
 
     const formatted = format(tunedTimes, "24h", +7);
+
+    // Malang
+
+    let dataMalang = [];
+
+    const timesMalang = calculator(
+        {
+            longitude: 112.6012397,
+            latitude: -7.932419,
+        },
+        today()
+    );
+    const formattedMalang = format(timesMalang, "24h", +7);
 
     const selectedPrayers = [
         "fajr",
@@ -143,11 +149,18 @@ function App() {
 
         const waktuSholatBaru = {
             id: urutan,
-            name: namaWaktu[urutan-1],
+            name: namaWaktu[urutan - 1],
             when: when,
             next: next,
         };
         data.push(waktuSholatBaru);
+
+        const waktuSholatMalang = {
+            id: urutan,
+            name: namaWaktu[urutan - 1],
+            when: formattedMalang[prayer],
+        };
+        dataMalang.push(waktuSholatMalang);
 
         urutan++;
     });
@@ -157,7 +170,24 @@ function App() {
     });
 
     const theThings = data.map((thing) => {
-        return <Sholat key={thing.id} id={thing.id} data={thing} waktu={waktu} />;
+        return (
+            <Sholat key={thing.id} id={thing.id} data={thing} waktu={waktu} />
+        );
+    });
+
+    const theWaktuSholatMalang = dataMalang.map((thing) => {
+        return (
+            <Box
+                sx={{
+                    padding: 0,
+                    margin: "10px 0px",
+                    borderRadius: "3px",
+                    color: "grey",
+                }}
+            >
+                <p>{thing.when}</p>
+            </Box>
+        );
     });
 
     return (
@@ -188,8 +218,7 @@ function App() {
                                     sx={{ flexGrow: 1 }}
                                     fontSize="small"
                                 >
-                                    {/* <PlaceIcon fontSize="small" /> Kota Bekasi */}
-                                    <PlaceIcon fontSize="small" /> Kota Malang
+                                    <PlaceIcon fontSize="small" /> Kota Bekasi
                                 </Typography>
                             </Stack>
                         </Toolbar>
@@ -200,8 +229,19 @@ function App() {
                         paddingTop={11}
                         useFlexGap
                         flexWrap="wrap"
+                        direction="horizontal"
                     >
-                        {theThings}
+                        <Stack padding={1} useFlexGap flexWrap="wrap">
+                            {theWaktuSholatMalang}
+                        </Stack>
+                        <Stack
+                            padding={1}
+                            useFlexGap
+                            flexWrap="wrap"
+                            width="90%"
+                        >
+                            {theThings}
+                        </Stack>
                     </Stack>
                 </Container>
             </div>
