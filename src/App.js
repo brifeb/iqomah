@@ -210,23 +210,43 @@ function App() {
                                 <Typography
                                     component="div"
                                     sx={{ flexGrow: 1 }}
+                                    fontSize={28}
+                                    color="yellow"
                                 >
                                     {waktu.format("HH:mm:ss")}
                                 </Typography>
-                                <Typography
-                                    component="div"
-                                    sx={{ flexGrow: 1 }}
-                                    fontSize="small"
+                                <Stack
+                                    useFlexGap
+                                    flexWrap="wrap"
+                                    direction="horizontal"
                                 >
-                                    <PlaceIcon fontSize="small" /> Kota Bekasi
-                                </Typography>
+                                    <Typography
+                                        component="div"
+                                        sx={{ flexGrow: 1 }}
+                                        fontSize="small"
+                                        textAlign="left"
+                                        color="gray"
+                                    >
+                                        <PlaceIcon fontSize="small" />
+                                        Malang
+                                    </Typography>
+                                    <Typography
+                                        component="div"
+                                        sx={{ flexGrow: 1 }}
+                                        fontSize="small"
+                                        color="gray"
+                                    >
+                                        <PlaceIcon fontSize="small" />
+                                        Kota Bekasi
+                                    </Typography>
+                                </Stack>
                             </Stack>
                         </Toolbar>
                     </AppBar>
 
                     <Stack
                         padding={1}
-                        paddingTop={11}
+                        paddingTop={12}
                         useFlexGap
                         flexWrap="wrap"
                         direction="horizontal"
@@ -238,7 +258,7 @@ function App() {
                             padding={1}
                             useFlexGap
                             flexWrap="wrap"
-                            width="90%"
+                            width="84%"
                         >
                             {theThings}
                         </Stack>
