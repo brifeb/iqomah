@@ -12,9 +12,28 @@ export default function Sholat({ data, waktu }) {
     const waktuSholat = dayjs(data.when);
     const waktuNextSholat = dayjs(data.next);
     let gapNowToSholat = dayjs.duration(waktu.diff(waktuSholat));
+    let gapNowToNextSholat = dayjs.duration(waktu.diff(waktuNextSholat));
     let gapSholatToNextSholat = dayjs.duration(
         waktuNextSholat.diff(waktuSholat)
     );
+
+    const cetakSisa = () => {
+        const hour = gapNowToNextSholat.hours();
+        const minutes = gapNowToNextSholat.minutes();
+        const seconds = gapNowToNextSholat.seconds();
+
+        const toplus = (angka) => {
+            return angka * -1;
+        };
+
+        const hourS = hour !== 0 ? toplus(hour) + "h " : "";
+        const minutesS = minutes !== 0 ? toplus(minutes) + "m " : "";
+        const secondsS = seconds !== 0 ? toplus(seconds) + "s" : "";
+
+        if (data.currentSholat === data.id) {
+            return "- " + hourS + minutesS + secondsS;
+        }
+    }
 
     const cetakBefore = () => {
         if (
@@ -119,10 +138,9 @@ export default function Sholat({ data, waktu }) {
             >
                 <Grid container>
                     <Grid item xs={4}>
-                        <Typography>
-                            {cetakBefore()}
-                            {cetakIqomah()}
-                        </Typography>
+                        <Typography color="lightgreen">{cetakAfter()}</Typography>
+                        <Typography>{cetakIqomah()}</Typography>
+                        {/* <Typography>{cetakBefore()}</Typography> */}
                     </Grid>
                     <Grid item xs={4}>
                         <Typography>{toTitleCase(data.name)}</Typography>
@@ -131,7 +149,7 @@ export default function Sholat({ data, waktu }) {
                         </Typography>
                     </Grid>
                     <Grid item xs={4}>
-                        <Typography>{cetakAfter()}</Typography>
+                        <Typography color="pink">{cetakSisa()}</Typography>
                     </Grid>
                 </Grid>
             </Box>
