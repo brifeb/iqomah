@@ -103,6 +103,9 @@ export default function Sholat({ data, waktu }) {
     progress = progress > 100 ? 100 : progress;
     progress = progress < 0 ? 0 : progress;
 
+    let progressTxt = (100 - progress) + "%";
+    progressTxt = progress === 0 || progress === 100 ? "" : progressTxt;
+
     function toTitleCase(str) {
         return str.replace(/\w\S*/g, function (txt) {
             return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
@@ -140,7 +143,7 @@ export default function Sholat({ data, waktu }) {
                     <Grid item xs={4}>
                         <Typography color="lightgreen">{cetakAfter()}</Typography>
                         <Typography>{cetakIqomah()}</Typography>
-                        {/* <Typography>{cetakBefore()}</Typography> */}
+                        <Typography>{cetakBefore()}</Typography>
                     </Grid>
                     <Grid item xs={4}>
                         <Typography>{toTitleCase(data.name)}</Typography>
@@ -149,7 +152,8 @@ export default function Sholat({ data, waktu }) {
                         </Typography>
                     </Grid>
                     <Grid item xs={4}>
-                        <Typography color="pink">{cetakSisa()}</Typography>
+                        {/* <Typography color="pink">{cetakSisa()}</Typography> */}
+                        <Typography color="green">{progressTxt}</Typography>
                     </Grid>
                 </Grid>
             </Box>
